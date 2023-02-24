@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import reactor.util.Logger;
+import reactor.util.Loggers;
 
 import java.util.function.BiFunction;
 
@@ -18,9 +20,14 @@ import java.util.function.BiFunction;
  */
 @Configuration
 public class RouterConfig {
+    private static final Logger logger = Loggers.getLogger(RouterConfig.class);
     @Bean
     public RouterFunction<ServerResponse> router(RequestHandler requestHandler) {
         return RouterFunctions.route()
+                .before(req -> {
+                    logger.debug("%s", req);
+                    return req;
+                })
                 .path("router/table", () -> tableRouter(requestHandler))
                 .path("router/square", () -> squareRouter(requestHandler))
                 .POST("router/multiply", requestHandler::multiplyHandler)
