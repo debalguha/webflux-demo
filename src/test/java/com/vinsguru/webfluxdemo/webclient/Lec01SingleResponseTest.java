@@ -1,4 +1,4 @@
-package com.vinsguru.webfluxdemo;
+package com.vinsguru.webfluxdemo.webclient;
 
 import com.vinsguru.webfluxdemo.dto.Response;
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +10,7 @@ import reactor.test.StepVerifier;
 /**
  * @author debal
  */
-public class Lec01SingleResponseTest extends BaseTest{
+public class Lec01SingleResponseTest extends BaseTest {
 
 
     @Autowired

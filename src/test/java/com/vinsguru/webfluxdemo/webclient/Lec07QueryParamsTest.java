@@ -1,4 +1,4 @@
-package com.vinsguru.webfluxdemo;
+package com.vinsguru.webfluxdemo.webclient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.net.URI;
 /**
  * @author debal
  */
-public class Lec07QueryParamsTest  extends BaseTest{
+public class Lec07QueryParamsTest  extends BaseTest {
     @Autowired
     private WebClient webClient;
 

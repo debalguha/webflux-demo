@@ -1,4 +1,4 @@
-package com.vinsguru.webfluxdemo.config;
+package com.vinsguru.webfluxdemo.webclient.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.vinsguru.webfluxdemo;
+package com.vinsguru.webfluxdemo.webclient;
 
 import com.vinsguru.webfluxdemo.dto.MultiplyRequestDto;
 import com.vinsguru.webfluxdemo.dto.Response;
@@ -10,18 +10,19 @@ import reactor.test.StepVerifier;
 /**
  * @author debal
  */
-public class lec03PostRequestTest extends BaseTest {
+public class Lec04HeadersTest extends BaseTest {
     @Autowired
     private WebClient webClient;
 
     @Test
-    public void postTest() {
+    public void headersTest() {
         StepVerifier.create(this.webClient
-                .post()
-                .uri("reactive-math/multiply")
+                        .post()
+                        .uri("reactive-math/multiply")
                         .bodyValue(multiplyRequestDto(4, 5))
-                .retrieve()
-                .bodyToMono(Response.class))
+                        .headers(h -> h.set("someKey", "someValue"))
+                        .retrieve()
+                        .bodyToMono(Response.class).doOnNext(System.out::println))
                 .expectNextMatches(res -> res.getOutput() == 20)
                 .verifyComplete();
     }

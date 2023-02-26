@@ -2,6 +2,7 @@ package com.vinsguru.webfluxdemo.config;
 
 import com.vinsguru.webfluxdemo.dto.InputFailedValidationResponse;
 import com.vinsguru.webfluxdemo.exception.InputValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -21,22 +22,25 @@ import java.util.function.BiFunction;
 @Configuration
 public class RouterConfig {
     private static final Logger logger = Loggers.getLogger(RouterConfig.class);
+
+    @Autowired
+    private RequestHandler requestHandler;
     @Bean
-    public RouterFunction<ServerResponse> router(RequestHandler requestHandler) {
+    public RouterFunction<ServerResponse> router() {
         return RouterFunctions.route()
                 .before(req -> {
                     logger.debug("%s", req);
                     return req;
                 })
-                .path("router/table", () -> tableRouter(requestHandler))
+                .path("router/table", this::tableRouter)
                 .path("router/square", () -> squareRouter(requestHandler))
                 .POST("router/multiply", requestHandler::multiplyHandler)
-                .path("router/calc", () -> calculator(requestHandler))
+                .path("router/calc", this::calculator)
                 .onError(InputValidationException.class, handleError())
                 .build();
     }
 
-    private RouterFunction<ServerResponse> calculator(RequestHandler requestHandler) {
+    private RouterFunction<ServerResponse> calculator() {
         return RouterFunctions.route()
                 .GET("{input1}/{input2}", RequestPredicates.headers(hs -> !hs.header("OP").isEmpty()),requestHandler:: calculator)
                 .GET("{input1}/{input2}", RequestPredicates.all(), req -> ServerResponse.badRequest().bodyValue("Invalid request or operation!!"))
@@ -51,7 +55,7 @@ public class RouterConfig {
                 .GET("{input}/validation", requestHandler::squareHandlerWithValidation)
                 .build();
     }
-    public RouterFunction<ServerResponse> tableRouter(RequestHandler requestHandler) {
+    public RouterFunction<ServerResponse> tableRouter() {
         return RouterFunctions.route()
                 .GET("{input}", requestHandler::tableHandler)
                 .GET("{input}/stream", requestHandler::tableStreamHandler)

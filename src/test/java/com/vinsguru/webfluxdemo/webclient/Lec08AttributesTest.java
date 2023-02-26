@@ -1,4 +1,4 @@
-package com.vinsguru.webfluxdemo;
+package com.vinsguru.webfluxdemo.webclient;
 
 import com.vinsguru.webfluxdemo.dto.MultiplyRequestDto;
 import com.vinsguru.webfluxdemo.dto.Response;
@@ -10,7 +10,7 @@ import reactor.test.StepVerifier;
 /**
  * @author debal
  */
-public class Lec08AttributesTest extends BaseTest{
+public class Lec08AttributesTest extends BaseTest {
 
     @Autowired
     private WebClient webClient;
